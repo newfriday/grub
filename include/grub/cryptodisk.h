@@ -187,4 +187,18 @@ grub_util_get_geli_uuid (const char *dev);
 grub_cryptodisk_t grub_cryptodisk_get_by_uuid (const char *uuid);
 grub_cryptodisk_t grub_cryptodisk_get_by_source_disk (grub_disk_t disk);
 
+struct grub_secret_entry {
+  /* as named list */
+  struct grub_secret_entry *next;
+  struct grub_secret_entry **prev;
+  const char *name;
+
+  /* additional entries */
+  grub_err_t (*get)(const char *arg, char **secret);
+  void (*put)(const char *arg, char **secret);
+};
+
+void grub_cryptodisk_add_secret_provider (struct grub_secret_entry *e);
+void grub_cryptodisk_remove_secret_provider (struct grub_secret_entry *e);
+
 #endif
